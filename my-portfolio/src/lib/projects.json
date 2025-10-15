@@ -1,0 +1,62 @@
+{
+  "3d": [
+    {
+      "title": "THE GROWTH",
+      "description": "Realtime shader experiment with glsl noise.",
+      "image": "/images/growth.png",
+      "link": "https://www.youtube.com/watch?v=uaKnCbzAf1E&t=5s"
+    }
+  ],
+
+  "gamedev": [
+    {
+      "title": "KILL THE MEATBALLS",
+      "description": "A 2D platform game built with Godot.",
+      "image": "/images/meatballs.png",
+      "link": "https://mrazek-studios.itch.io/kill-the-meatballs"
+    },
+    {
+      "title": "LUCERNA",
+      "description": "A 2D platform game built with Godot.",
+      "image": "/images/lucerna.png",
+      "link": "https://mrazek-studios.itch.io/lucerna"
+    },
+     {
+      "title": "COGITO",
+      "description": "A 2D platform game built with Godot.",
+      "image": "/images/cogito.png",
+      "link": "https://woprok.itch.io/cogito"
+    }
+  ],
+
+   "hardware": [
+    {
+      "title": "ČAJOMAT",
+      "description": "A 2D platform game built with Godot.",
+      "image": "/images/cajomat.jpg",
+      "link": "https://www.youtube.com/watch?v=hL6k7PTb1Ck&t=5s"
+    },
+    {
+      "title": "SONICSTEP",
+      "description": "A 2D platform game built with Godot.",
+      "image": "/images/sonicstep2.png",
+      "link": "https://youtube.com/shorts/306gPycBFcA?feature=share"
+    }
+  ],
+
+   "video": [
+     {
+      "title": "PAVUČINA",
+      "description": "Realtime shader experiment with glsl noise.",
+      "video": "/videos/pavucina.mp4",
+      "link": "https://www.youtube.com/watch?v=LPGnobr5zs4"
+    },
+     {
+      "title": "SUTNAR'S DREAM",
+      "description": "Realtime shader experiment with glsl noise.",
+      "image": "/images/sutnar.jpg",
+      "link": "https://example.com/space"
+    }
+  ]
+
+}
