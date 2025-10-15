@@ -10,25 +10,25 @@
 
   "gamedev": [
     {
-      "title": "KILL THE MEATBALLS",
+      
       "description": "A 2D platform game built with Godot.",
       "image": "/images/meatballs.png",
       "link": "https://mrazek-studios.itch.io/kill-the-meatballs"
     },
     {
-      "title": "LUCERNA",
+     
       "description": "A 2D platform game built with Godot.",
       "image": "/images/lucerna.png",
       "link": "https://mrazek-studios.itch.io/lucerna"
     },
      {
-      "title": "COGITO",
+      
       "description": "A 2D platform game built with Godot.",
       "image": "/images/cogito.png",
       "link": "https://woprok.itch.io/cogito"
     },
       {
-      "title": "GESTUREGEDDON",
+      
       "description": "A 2D platform game built with Godot.",
       "image": "/images/gesture.png",
       "link": "https://youtube.com/shorts/FYeGBUAl9Cw"
