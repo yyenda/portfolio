@@ -95,6 +95,23 @@
       renderer.render(scene, camera);
     }
 
+    function isMobile() {
+  return /Mobi|Android/i.test(navigator.userAgent);
+}
+
+if (isMobile()) {
+  window.addEventListener('deviceorientation', (event) => {
+    // gamma: left/right, beta: front/back tilt
+    let gamma = event.gamma || 0; // range -90 to 90
+    let beta = event.beta || 0;   // range -180 to 180
+
+    // Normalize and clamp to range -1 to 1
+    mouse.x = THREE.MathUtils.clamp(gamma / 30, -1, 1);
+    mouse.y = THREE.MathUtils.clamp(-beta / 30, -1, 1); // invert to match screen
+  }, true);
+}
+
+
     animate();
 
     window.addEventListener('resize', () => {
