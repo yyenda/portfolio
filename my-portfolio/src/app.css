@@ -163,6 +163,20 @@ button:focus-visible {
   text-decoration: none;
 }
 
+@media (max-width: 600px) {
+  .categories {
+    flex-wrap: wrap; /* allow wrapping on small screens */
+    justify-content: center;
+  }
+
+  .category-link {
+    flex: 1 1 40%;     /* allow each link to take space and wrap */
+    text-align: center;
+ 
+    margin: 0.3rem;
+  }
+}
+
 .category-link:hover {
   color: rgb(20, 133, 255);
 }
