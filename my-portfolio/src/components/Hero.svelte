@@ -7,6 +7,7 @@
   let container;
 
   onMount(() => {
+      document.body.classList.add('no-scroll');
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(
       75, window.innerWidth / window.innerHeight, 0.1, 1000
@@ -115,38 +116,6 @@ if (isMobile()) {
   }, true);
 }
 
-function requestGyroPermission() {
-  if (
-    typeof DeviceOrientationEvent !== 'undefined' &&
-    typeof DeviceOrientationEvent.requestPermission === 'function'
-  ) {
-    DeviceOrientationEvent.requestPermission()
-      .then((response) => {
-        if (response === 'granted') {
-          startGyro();
-          showGyroButton = false;
-        }
-      })
-      .catch(console.error);
-  } else {
-    startGyro(); // Android doesn't need permission
-    showGyroButton = false;
-  }
-}
-
-function startGyro() {
-  window.addEventListener('deviceorientation', (event) => {
-    let gamma = event.gamma || 0;
-    let beta = event.beta || 0;
-    mouse.x = THREE.MathUtils.clamp(gamma / 30, -1, 1);
-    mouse.y = THREE.MathUtils.clamp(-beta / 30, -1, 1);
-  }, true);
-}
-
-if (isMobile()) {
-  showGyroButton = true;
-}
-
 
     animate();
 
@@ -177,9 +146,11 @@ if (isMobile()) {
   </div>
 </div>
 
-{#if showGyroButton}
-  <button on:click={requestGyroPermission} class="gyro-btn">
-    Enable Motion
-  </button>
-{/if}
+<style>
+  body.no-scroll {
+  overflow: hidden;
+  height: 100svh;
+}
+
+</style>
 

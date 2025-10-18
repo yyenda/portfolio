@@ -18,10 +18,20 @@
 
 body {
   margin: 0;
+  padding: 0;
   min-width: 320px;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
+}
+
+
+.hero-container {
+  overflow: hidden;
+  height: 100svh;
+  overscroll-behavior: none;
+  touch-action: none;
 }
 
 /* === Links === */
@@ -57,7 +67,7 @@ nav a {
 .hero-container {
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: 100svh;
   overflow: hidden; /* keep 3D background contained */
   display: flex;
   flex-direction: column;
@@ -73,6 +83,7 @@ nav a {
   width: 100%;
   height: 100%;
   z-index: 0;
+   pointer-events: none; 
 }
 .hero-background canvas {
   position: absolute;
@@ -98,7 +109,7 @@ nav a {
 /* Main Title */
 .hero-title {
   font-family: 'Anton', sans-serif;
-  font-size: 15vw; /* scales to screen width */
+  font-size: 18vw; /* scales to screen width */
   font-weight: 900;
   line-height: 0.85;
   letter-spacing: -0.02em;
@@ -106,11 +117,32 @@ nav a {
   margin: 0 0 2rem 0;
 }
 
+
+@media (max-width: 600px) {
+  .hero-title {
+
+  font-size: 23vw; /* scales to screen width */
+  line-height: 1.2;
+  margin: 0 0 0 0;
+}
+
+
+}
+
 /* Categories */
 .categories-wrapper {
   width: 100%;
   max-width: 600px;
   margin-top: 2rem;
+}
+
+@media (max-width: 600px) {
+  .categories-wrapper {
+
+margin-top: 0;
+}
+
+
 }
 .categories {
   font-family: 'Bebas Neue', sans-serif;
@@ -167,6 +199,7 @@ button:focus-visible {
   .categories {
     flex-wrap: wrap; /* allow wrapping on small screens */
     justify-content: center;
+    margin-top: 0.5rem;
   }
 
   .category-link {
@@ -174,6 +207,7 @@ button:focus-visible {
     text-align: center;
  
     margin: 0.3rem;
+    padding: 0rem 1rem;
   }
 }
 
@@ -214,6 +248,31 @@ button:focus-visible {
   margin-bottom: 1rem;
   color: rgba(255, 255, 255, 0.9);
 }
+
+@media (max-width: 768px) {
+  .about-section {
+    padding: 2rem;
+    height: 100svh;
+    position: relative;
+  }
+
+  .about-text {
+    text-align: center;
+  }
+
+  .about-text h1 {
+    font-size: 2.5rem;
+  }
+
+  .about-text p {
+    font-size: 1.1rem;
+  }
+
+  .social-links {
+    justify-content: center;
+  }
+}
+
 
 .social-links {
   margin-top: 2rem;

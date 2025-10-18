@@ -63,9 +63,12 @@
             mesh.position.y = y + clones[i][1];
             mesh.position.z = z + clones[i][2];
             mesh.rotation.x = Math.PI / 2 * -1;
-            mesh.position.x = 1500;
+            const isMobile = window.innerWidth < 768;
+
+            mesh.position.x = isMobile ? 700 : 1500;
             mesh.position.y = -700;
             mesh.position.z = 0;
+
             parent.add(mesh);
             clonemeshes.push({ mesh: mesh, speed: 0.5 + Math.random() });
         }
