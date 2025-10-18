@@ -1,6 +1,8 @@
 <script>
   import { onMount } from 'svelte';
   import * as THREE from 'three';
+  let showGyroButton = false;
+
 
   let container;
 
@@ -41,10 +43,12 @@
     const mouse = new THREE.Vector2(0, 0);
     const mouseWorld = new THREE.Vector3();
 
-    window.addEventListener('mousemove', (event) => {
-      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    });
+   if (!isMobile()) {
+  window.addEventListener('mousemove', (event) => {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+  });
+}
 
     const originalPositions = positions.slice();
 
@@ -111,6 +115,38 @@ if (isMobile()) {
   }, true);
 }
 
+function requestGyroPermission() {
+  if (
+    typeof DeviceOrientationEvent !== 'undefined' &&
+    typeof DeviceOrientationEvent.requestPermission === 'function'
+  ) {
+    DeviceOrientationEvent.requestPermission()
+      .then((response) => {
+        if (response === 'granted') {
+          startGyro();
+          showGyroButton = false;
+        }
+      })
+      .catch(console.error);
+  } else {
+    startGyro(); // Android doesn't need permission
+    showGyroButton = false;
+  }
+}
+
+function startGyro() {
+  window.addEventListener('deviceorientation', (event) => {
+    let gamma = event.gamma || 0;
+    let beta = event.beta || 0;
+    mouse.x = THREE.MathUtils.clamp(gamma / 30, -1, 1);
+    mouse.y = THREE.MathUtils.clamp(-beta / 30, -1, 1);
+  }, true);
+}
+
+if (isMobile()) {
+  showGyroButton = true;
+}
+
 
     animate();
 
@@ -140,3 +176,10 @@ if (isMobile()) {
     </div>
   </div>
 </div>
+
+{#if showGyroButton}
+  <button on:click={requestGyroPermission} class="gyro-btn">
+    Enable Motion
+  </button>
+{/if}
+

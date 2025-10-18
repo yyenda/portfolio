@@ -249,7 +249,7 @@
         scene.fog = new THREE.FogExp2(0xffffff, 0.0000675);
         camera.lookAt(scene.position);
         const loader = new OBJLoader();
-        loader.load('/models/face.obj', function (object) {
+        loader.load('static/models/face.obj', function (object) {
             const positions = combineBuffer(object, 'position');
             createMesh(positions, scene, 4.05, -500, -350, 600, 0xbb86fc);
         });

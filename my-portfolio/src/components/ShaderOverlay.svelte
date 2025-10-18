@@ -52,4 +52,10 @@
     z-index: 20;
     mix-blend-mode: lighten;
   }
+
+  @media (max-width: 600px) {
+#shader-canvas {
+    display: none;
+  }
+}
 </style>
