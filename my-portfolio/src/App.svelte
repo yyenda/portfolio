@@ -5,7 +5,7 @@
   import ProjectList from './routes/ProjectList.svelte';
     import About from './routes/about.svelte';
     import Contact from './routes/contact.svelte';
-    import ShaderOverlay from './components/ShaderOverlay.svelte';
+    
 
 
   const routes = {
@@ -20,6 +20,6 @@
 <Navbar />
 <Router {routes} />
 
-<ShaderOverlay />
+
 
 
