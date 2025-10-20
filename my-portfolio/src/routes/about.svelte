@@ -275,9 +275,7 @@
         const outputPass = new OutputPass();
         composer = new EffectComposer(renderer);
         composer.addPass(renderModel);
-        composer.addPass(effectBloom);
-        composer.addPass(effectFilm);
-        composer.addPass(effectFocus);
+        
         composer.addPass(outputPass);
         window.addEventListener('resize', onWindowResize);
         window.addEventListener('mousemove', (event) => {
