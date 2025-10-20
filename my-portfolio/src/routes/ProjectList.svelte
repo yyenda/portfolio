@@ -31,8 +31,7 @@
     {#each projects as project, index}
       <div
         class="project-card"
-        data-aos="zoom-in"
-        data-aos-delay={index * 100}
+        
       >
         <a
           href={project.link}
@@ -74,6 +73,7 @@
   padding: 1rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
+  font-family: 'Bebas Neue', sans-serif;
 }
 
 .category-title {
@@ -86,18 +86,22 @@
 
 /* Responsive grid */
 .projects-grid {
-  display: grid;
-  gap: 2rem;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem;
 }
 
 /* Project card */
 .project-card {
+  width: 100%;
+  max-width: 700px; /* narrower card */
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 0 30px rgba(140, 70, 157, 0.15);
-  transition: transform 0.3s ease;
+  transition: transform 0.1s ease;
 }
+
 .project-card:hover {
   transform: scale(1.02);
 }
