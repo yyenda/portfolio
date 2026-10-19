@@ -359,3 +359,24 @@ window.addEventListener('keydown', e => {
     if (e.key === 'Escape') closeModal();
   }
 });
+
+// ─── Mobile Auto-Hide Header on Scroll ──────────────────────────────────────
+const siteHeader = document.querySelector('.site-header');
+let lastScrollY = window.scrollY;
+
+window.addEventListener('scroll', () => {
+  const currentScrollY = window.scrollY;
+  if (window.innerWidth <= 768 && siteHeader) {
+    if (currentScrollY > 60 && currentScrollY > lastScrollY) {
+      // Scrolling down past top: hide navbar smoothly
+      siteHeader.classList.add('header-hidden');
+    } else {
+      // Scrolling up or at top: reveal navbar smoothly
+      siteHeader.classList.remove('header-hidden');
+    }
+  } else if (siteHeader) {
+    siteHeader.classList.remove('header-hidden');
+  }
+  lastScrollY = currentScrollY;
+}, { passive: true });
+
