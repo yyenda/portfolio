@@ -1,24 +1,340 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Jan Mrázek</title>
-    <link rel="stylesheet" href="https://use.typekit.net/uca7pkl.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JAN MRÁZEK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+  <style>
+    body { overflow: hidden; }
 
+    #canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
 
+    #lines {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
 
+    .labels {
+      position: fixed;
+      inset: 0;
+      z-index: 2;
+      pointer-events: none;
+    }
+    .label {
+      position: absolute;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--green);
+      text-shadow: 0 0 12px rgba(0,255,127,0.6), 0 0 0 2px var(--bg);
+      white-space: nowrap;
+      transform: translate(-50%, -50%);
+      /* Opaque background behind text so lines don't bleed through */
+      background: var(--bg);
+      padding: 1px 4px;
+    }
 
-  </head>
-  <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.js"></script>
-    <canvas id="shader-canvas" style="position: fixed; top: 0; left: 0; z-index: 9999; pointer-events: none;"></canvas>
+    .tagline {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.58rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.3;
+      z-index: 10;
+      white-space: nowrap;
+    }
 
+    /* ─── Interactive Controls UI ─────────────── */
+    .controls-panel {
+      position: fixed;
+      bottom: 2rem;
+      left: 2.5rem;
+      z-index: 100;
+      background: rgb(253, 253, 252);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(10, 10, 10, 0.12);
+      font-family: var(--font);
+      font-size: 0.56rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ink);
+      width: 210px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.06);
+      transition: width 0.25s ease;
+    }
+    .controls-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0.8rem;
+      border-bottom: 1px solid rgba(10, 10, 10, 0.08);
+      cursor: pointer;
+      user-select: none;
+    }
+    .controls-title {
+      font-weight: 700;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .controls-title::before {
+      content: '';
+      display: inline-block;
+      width: 5px;
+      height: 5px;
+      background: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 6px var(--green);
+    }
+    .controls-toggle-btn {
+      background: none;
+      border: 1px solid rgba(10, 10, 10, 0.2);
+      font-family: var(--font);
+      font-size: 0.58rem;
+      width: 17px;
+      height: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: var(--ink);
+      transition: border-color 0.18s, color 0.18s;
+      padding: 0;
+      line-height: 1;
+    }
+    .controls-toggle-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .controls-body {
+      padding: 0.8rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+      transition: max-height 0.25s ease, opacity 0.25s ease;
+      overflow: hidden;
+    }
+    .controls-panel.collapsed .controls-body {
+      display: none;
+    }
+    .controls-panel.collapsed .controls-header {
+      border-bottom: none;
+    }
+    .ctrl-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .ctrl-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 0.5rem;
+      letter-spacing: 0.16em;
+      opacity: 0.75;
+    }
+    .ctrl-val {
+      font-weight: 700;
+      color: var(--green);
+      text-shadow: 0 0 8px rgba(0, 255, 127, 0.4);
+    }
+    /* Slider styling */
+    .ctrl-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 3px;
+      background: rgba(10, 10, 10, 0.15);
+      outline: none;
+      border-radius: 0;
+      cursor: pointer;
+    }
+    .ctrl-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 10px;
+      height: 10px;
+      background: var(--ink);
+      border: 1px solid var(--green);
+      cursor: pointer;
+      transition: background 0.15s, transform 0.15s;
+    }
+    .ctrl-slider::-webkit-slider-thumb:hover {
+      background: var(--green);
+      transform: scale(1.2);
+    }
+    .ctrl-slider::-moz-range-thumb {
+      width: 10px;
+      height: 10px;
+      background: var(--ink);
+      border: 1px solid var(--green);
+      cursor: pointer;
+      border-radius: 0;
+    }
+    /* Toggle switch row */
+    .ctrl-toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 0.1rem;
+      font-size: 0.5rem;
+      letter-spacing: 0.16em;
+      opacity: 0.75;
+    }
+    .ctrl-switch-btn {
+      background: none;
+      border: 1px solid rgba(10, 10, 10, 0.2);
+      font-family: var(--font);
+      font-size: 0.5rem;
+      letter-spacing: 0.2em;
+      padding: 0.2rem 0.55rem;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      color: var(--ink);
+    }
+    .ctrl-switch-btn.active {
+      background: var(--green);
+      border-color: var(--green);
+      color: #0a0a0a;
+      font-weight: 700;
+      box-shadow: 0 0 10px rgba(0, 255, 127, 0.4);
+    }
+    /* Reset button */
+    .ctrl-reset-btn {
+      background: none;
+      border: 1px dashed rgba(10, 10, 10, 0.2);
+      font-family: var(--font);
+      font-size: 0.48rem;
+      letter-spacing: 0.2em;
+      padding: 0.35rem;
+      margin-top: 0.2rem;
+      cursor: pointer;
+      color: rgba(10, 10, 10, 0.5);
+      text-transform: uppercase;
+      transition: all 0.18s;
+    }
+    .ctrl-reset-btn:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
 
-  </body>
+    /* ─── Mobile ──────────────────────────────── */
+    @media (max-width: 767px) {
+      /* Hide labels/lines on mobile — too cluttered */
+      .labels, #lines { display: none; }
+      .tagline { display: none; }
+
+      /* Tighter header */
+      .site-header { padding: 1.2rem 1.5rem; }
+      .logo { font-size: 0.72rem; }
+      .site-nav { gap: 1.5rem; font-size: 0.68rem; }
+
+      /* Controls panel compact on mobile */
+      .controls-panel {
+        left: 1.2rem;
+        bottom: 1.2rem;
+        width: 175px;
+      }
+
+      /* Social corner closer in */
+      .social { bottom: 1.2rem; right: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="canvas"></canvas>
+  <svg id="lines" aria-hidden="true"></svg>
+
+  <!-- Labels with bg so lines don't bleed into text -->
+  <div class="labels" aria-hidden="true">
+    <span class="label" style="left:10%;top:27%">ARTIST</span>
+    <span class="label" style="left:78%;top:22%">3D, MOTION &amp; TECH</span>
+    <span class="label" style="left:8%;top:68%">INTERACTIVE</span>
+    <span class="label" style="left:76%;top:72%">CREATIVE</span>
+    <span class="label" style="left:44%;top:87%">PILSEN, CZ</span>
+  </div>
+
+  <header class="site-header">
+    <a href="/" class="logo">JAN<br>MRÁZEK</a>
+    <nav class="site-nav">
+      <a href="/works.html">WORK</a>
+      <a href="/about.html">ABOUT</a>
+    </nav>
+  </header>
+
+  <div class="social">
+    <a href="https://instagram.com" target="_blank" rel="noopener">IG</a>
+    <a href="https://youtube.com" target="_blank" rel="noopener">YT</a>
+  </div>
+
+  <!-- Interactive Head Controls UI -->
+  <aside class="controls-panel" id="head-controls" aria-label="Head Controls">
+    <div class="controls-header" id="controls-header" role="button" tabindex="0" aria-expanded="true">
+      <span class="controls-title">CONTROLS</span>
+      <button class="controls-toggle-btn" id="controls-toggle-btn" type="button" aria-label="Collapse Controls">−</button>
+    </div>
+    <div class="controls-body" id="controls-body">
+      <!-- Mouse Deform Slider -->
+      <div class="ctrl-row">
+        <div class="ctrl-header">
+          <span>MOUSE DEFORM</span>
+          <span class="ctrl-val" id="val-deform">1.0x</span>
+        </div>
+        <input type="range" id="ctrl-deform" min="0" max="3" step="0.1" value="1.0" class="ctrl-slider" aria-label="Mouse deformation strength" />
+      </div>
+
+      <!-- Noise Amplitude Slider -->
+      <div class="ctrl-row">
+        <div class="ctrl-header">
+          <span>NOISE AMP</span>
+          <span class="ctrl-val" id="val-noise">0.06</span>
+        </div>
+        <input type="range" id="ctrl-noise" min="0" max="0.25" step="0.01" value="0.06" class="ctrl-slider" aria-label="Noise amplitude" />
+      </div>
+
+      <!-- Spin / Rotation Speed Slider -->
+      <div class="ctrl-row">
+        <div class="ctrl-header">
+          <span>SPIN SPEED</span>
+          <span class="ctrl-val" id="val-spin">1.0x</span>
+        </div>
+        <input type="range" id="ctrl-spin" min="0" max="3" step="0.1" value="1.0" class="ctrl-slider" aria-label="Auto rotation speed" />
+      </div>
+
+      <!-- Wireframe Toggle -->
+      <div class="ctrl-toggle-row">
+        <span>WIREFRAME</span>
+        <button type="button" class="ctrl-switch-btn active" id="ctrl-wireframe">ON</button>
+      </div>
+
+      <!-- Reset Button -->
+      <button type="button" class="ctrl-reset-btn" id="ctrl-reset">[ RESET ]</button>
+    </div>
+  </aside>
+
+  <p class="tagline">MOVE TO INTERACT</p>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
 </html>
-
-

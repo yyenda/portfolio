@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>WORK — JAN MRÁZEK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/src/style.css">
+  <style>
+    body { overflow-x: hidden; }
+
+    /* ─── Page intro ─────────────────────────────── */
+    .page-top {
+      padding: 7rem 3rem 2rem;
+      border-bottom: 1px solid rgba(10,10,10,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+    .page-title {
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1;
+      text-transform: uppercase;
+    }
+    .project-count {
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      opacity: 0.38;
+      text-transform: uppercase;
+      padding-bottom: 0.3rem;
+    }
+
+    /* ─── Project list ───────────────────────────── */
+    #projects { width: 100%; }
+
+    .project-row {
+      display: grid;
+      grid-template-columns: 3rem 1fr 1.6fr;
+      gap: 0 2.5rem;
+      padding: 3rem 3rem 3rem 3rem;
+      border-bottom: 1px solid rgba(10,10,10,0.08);
+      cursor: pointer;
+      transition: background 0.2s;
+      align-items: start;
+    }
+    .project-row:hover {
+      background: rgba(0, 255, 127, 0.04);
+    }
+    .project-row:hover .project-img-wrap::after {
+      opacity: 1;
+    }
+
+    /* Number */
+    .project-num {
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      color: var(--green);
+      padding-top: 0.6rem;
+    }
+
+    /* Pixelated image block */
+    .project-img-wrap {
+      position: relative;
+      aspect-ratio: 4/3;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+    .project-canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+    /* "OPEN" overlay */
+    .project-img-wrap::after {
+      content: '[ OPEN ]';
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.5);
+      color: var(--green);
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      font-family: var(--font);
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    /* Info block */
+    .project-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 0.3rem;
+    }
+    .project-title {
+      font-size: clamp(2.2rem, 4.5vw, 5rem);
+      font-weight: 700;
+      line-height: 0.9;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+    }
+    .project-meta {
+      display: flex;
+      gap: 1.2rem;
+      align-items: center;
+      font-size: 0.58rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+    }
+    .project-year { opacity: 0.38; }
+    .project-cat  { color: var(--green); }
+    .project-desc {
+      font-size: 0.68rem;
+      line-height: 1.7;
+      opacity: 0.6;
+      margin-top: 0.5rem;
+      max-width: 38ch;
+      letter-spacing: 0.04em;
+    }
+    .project-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 1px;
+      margin-top: 1rem;
+      width: fit-content;
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .project-row:hover .project-cta {
+      color: var(--green);
+      border-color: var(--green);
+    }
+
+    /* ─── Modal ──────────────────────────────────── */
+    .modal {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      display: flex;
+      align-items: flex-end;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    .modal.open {
+      pointer-events: all;
+      opacity: 1;
+    }
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(10,10,10,0.75);
+      backdrop-filter: blur(4px);
+    }
+    .modal-panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-height: 90svh;
+      background: var(--bg);
+      overflow-y: auto;
+      transform: translateY(100%);
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+      padding: 2.5rem 3rem 3rem;
+    }
+    .modal.open .modal-panel {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .modal-num   { font-size: 0.6rem; letter-spacing: 0.2em; color: var(--green); }
+    .modal-title { font-size: clamp(2rem, 5vw, 4.5rem); font-weight: 700; text-transform: uppercase; line-height: 1; }
+    .modal-year  { font-size: 0.6rem; letter-spacing: 0.2em; opacity: 0.38; margin-left: auto; text-transform: uppercase; }
+    .modal-close {
+      position: absolute;
+      top: 1.5rem;
+      right: 2rem;
+      background: none;
+      border: 1px solid rgba(10,10,10,0.2);
+      padding: 0.4rem 0.8rem;
+      font-family: var(--font);
+      font-size: 0.58rem;
+      letter-spacing: 0.18em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: border-color 0.18s, color 0.18s;
+    }
+    .modal-close:hover { border-color: var(--green); color: var(--green); }
+
+    /* ─── Modal Gallery ──────────────────────────── */
+    .modal-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .modal-media-wrap {
+      position: relative;
+      background: #0a0a0a;
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      border: 1px solid rgba(10,10,10,0.12);
+      cursor: pointer;
+    }
+    .modal-media-el {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    .modal-media-wrap:hover .modal-media-el {
+      transform: scale(1.03);
+    }
+    .media-zoom-btn {
+      position: absolute;
+      bottom: 0.6rem;
+      right: 0.6rem;
+      background: rgba(10, 10, 10, 0.82);
+      backdrop-filter: blur(4px);
+      color: var(--green);
+      border: 1px solid rgba(0, 255, 127, 0.4);
+      padding: 0.3rem 0.6rem;
+      font-family: var(--font);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.2s, color 0.2s;
+      pointer-events: none;
+      z-index: 2;
+    }
+    .modal-media-wrap:hover .media-zoom-btn {
+      opacity: 1;
+    }
+    .modal-media-wrap.video-wrap {
+      cursor: default;
+    }
+    .modal-media-wrap.video-wrap .media-zoom-btn {
+      pointer-events: auto;
+      cursor: pointer;
+    }
+    .modal-media-wrap.video-wrap:hover .media-zoom-btn {
+      opacity: 1;
+    }
+
+    /* ─── Lightbox / Fullscreen Gallery ───────────── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .lightbox.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .lightbox-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(10, 10, 10, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    .lightbox-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 4.5rem 2rem 2.5rem;
+      box-sizing: border-box;
+    }
+    .lightbox-top {
+      position: absolute;
+      top: 1.5rem;
+      left: 2rem;
+      right: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 10;
+    }
+    .lightbox-counter {
+      font-size: 0.65rem;
+      letter-spacing: 0.25em;
+      color: var(--green);
+      font-family: var(--font);
+    }
+    .lightbox-close {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #fff;
+      padding: 0.4rem 0.9rem;
+      font-family: var(--font);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .lightbox-close:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+    .lightbox-media {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      max-width: 90vw;
+      max-height: 80vh;
+      position: relative;
+    }
+    .lightbox-item {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+      user-select: none;
+    }
+    .lightbox-video {
+      background: #000;
+      max-width: 90vw;
+      max-height: 80vh;
+    }
+    .lightbox-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(10, 10, 10, 0.75);
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+      padding: 0.8rem 1.2rem;
+      font-family: var(--font);
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      cursor: pointer;
+      text-transform: uppercase;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      z-index: 10;
+    }
+    .lightbox-nav:hover {
+      border-color: var(--green);
+      color: var(--green);
+      background: rgba(0, 0, 0, 0.9);
+    }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
+
+    .modal-desc {
+      font-size: 0.75rem;
+      line-height: 1.85;
+      opacity: 0.65;
+      max-width: 60ch;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.5rem;
+    }
+    .modal-footer {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      border-top: 1px solid rgba(10,10,10,0.1);
+      padding-top: 1.5rem;
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+    }
+    .modal-cat { color: var(--green); }
+    .modal-link {
+      margin-left: auto;
+      color: var(--ink);
+      border-bottom: 1px solid var(--ink);
+      padding-bottom: 1px;
+      transition: color 0.18s, border-color 0.18s;
+    }
+    .modal-link:hover { color: var(--green); border-color: var(--green); }
+
+    /* ─── Mobile ─────────────────────────────────── */
+    @media (max-width: 700px) {
+      .page-top { padding: 5.5rem 1.5rem 1.5rem; flex-direction: column; gap: 0.5rem; }
+      .page-title { font-size: clamp(2.2rem, 10vw, 3.5rem); }
+
+      .project-row {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+        gap: 0.8rem;
+      }
+      /* Stack: num → image → info */
+      .project-num { padding-top: 0; }
+      .project-img-wrap { width: 100%; }
+      .project-title { font-size: clamp(2rem, 8.5vw, 3rem); }
+      .project-desc { font-size: 0.65rem; }
+      .project-cta { margin-top: 0.6rem; }
+
+      /* Modal full-screen on mobile */
+      .modal-panel {
+        padding: 2rem 1.5rem 3rem;
+        max-height: 92svh;
+      }
+      .modal-title { font-size: clamp(1.8rem, 7vw, 3rem); }
+      .modal-gallery { grid-template-columns: 1fr; }
+      .modal-close { top: 1rem; right: 1rem; }
+
+      /* Lightbox on mobile */
+      .lightbox-content { padding: 4rem 1rem 1.5rem; }
+      .lightbox-top { left: 1rem; right: 1rem; top: 1rem; }
+      .lightbox-nav {
+        top: auto;
+        bottom: 1rem;
+        transform: none;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.58rem;
+      }
+      .lightbox-prev { left: 1rem; }
+      .lightbox-next { right: 1rem; }
+      .lightbox-media { max-height: 70vh; }
+      .lightbox-item { max-height: 70vh; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <a href="/" class="logo">JAN<br>MRÁZEK</a>
+    <nav class="site-nav">
+      <a href="/works.html">WORK</a>
+      <a href="/about.html">ABOUT</a>
+    </nav>
+  </header>
+
+  <div class="social">
+    <a href="https://instagram.com" target="_blank" rel="noopener">IG</a>
+    <a href="https://youtube.com" target="_blank" rel="noopener">YT</a>
+  </div>
+
+  <div class="page-top">
+    <h1 class="page-title">SELECTED<br>WORK</h1>
+    <span class="project-count" id="project-count"></span>
+  </div>
+
+  <div id="projects"></div>
+
+  <!-- Modal -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-panel">
+      <button class="modal-close" id="modal-close">[ CLOSE ✕ ]</button>
+      <div class="modal-header">
+        <span class="modal-num" id="modal-num"></span>
+        <h2 class="modal-title" id="modal-title"></h2>
+        <span class="modal-year" id="modal-year"></span>
+      </div>
+      <div class="modal-gallery" id="modal-gallery"></div>
+      <p class="modal-desc" id="modal-desc"></p>
+      <div class="modal-footer">
+        <span class="modal-cat" id="modal-cat"></span>
+        <a class="modal-link" id="modal-link" target="_blank" rel="noopener" style="display:none">VIEW LIVE ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox / Fullscreen Gallery Viewer -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Media Viewer">
+    <div class="lightbox-backdrop" id="lightbox-backdrop"></div>
+    <div class="lightbox-content">
+      <div class="lightbox-top">
+        <span class="lightbox-counter" id="lightbox-counter">01 / 01</span>
+        <button class="lightbox-close" id="lightbox-close" type="button" aria-label="Close Lightbox">[ CLOSE ✕ ]</button>
+      </div>
+      <div class="lightbox-media" id="lightbox-media"></div>
+      <button class="lightbox-nav lightbox-prev" id="lightbox-prev" type="button" aria-label="Previous">← PREV</button>
+      <button class="lightbox-nav lightbox-next" id="lightbox-next" type="button" aria-label="Next">NEXT →</button>
+    </div>
+  </div>
+
+  <script type="module" src="/src/works.js"></script>
+</body>
+</html>

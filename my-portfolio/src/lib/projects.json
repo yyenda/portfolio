@@ -1,68 +1,82 @@
-{
-  "3d": [
-    {
-      "title": "THE GROWTH",
-      "description": "Realtime shader experiment with glsl noise.",
-      "image": "/images/growth.png",
-      "link": "https://www.youtube.com/watch?v=uaKnCbzAf1E&t=5s"
-    }
-  ],
-
-  "gamedev": [
-    {
-      
-      "description": "A 2D platform game built with Godot.",
-      "image": "/images/meatballs.png",
-      "link": "https://mrazek-studios.itch.io/kill-the-meatballs"
-    },
-    {
-     
-      "description": "A 2D platform game built with Godot.",
-      "image": "/images/lucerna.png",
-      "link": "https://mrazek-studios.itch.io/lucerna"
-    },
-     {
-      
-      "description": "A 2D platform game built with Godot.",
-      "image": "/images/cogito.png",
-      "link": "https://woprok.itch.io/cogito"
-    },
-      {
-      
-      "description": "A 2D platform game built with Godot.",
-      "image": "/images/gesture.png",
-      "link": "https://youtube.com/shorts/FYeGBUAl9Cw"
-    }
-  ],
-
-   "hardware": [
-    {
-      "title": "ČAJOMAT",
-      "description": "A 2D platform game built with Godot.",
-      "image": "/images/cajomat.jpg",
-      "link": "https://www.youtube.com/watch?v=hL6k7PTb1Ck&t=5s"
-    },
-    {
-      "title": "SONICSTEP",
-      "description": "A 2D platform game built with Godot.",
-      "image": "/images/sonicstep2.png",
-      "link": "https://youtube.com/shorts/306gPycBFcA?feature=share"
-    }
-  ],
-
-   "video": [
-     {
-      "title": "PAVUČINA",
-      "description": "Realtime shader experiment with glsl noise.",
-      "video": "/videos/pavucina.mp4",
-      "link": "https://www.youtube.com/watch?v=LPGnobr5zs4"
-    },
-     {
-      "title": "SUTNAR'S DREAM",
-      "description": "Realtime shader experiment with glsl noise.",
-      "image": "/images/sutnar.jpg",
-      "link": "https://www.youtube.com/shorts/atUuCbYjy_M"
-    }
-  ]
-
-}
+[
+  {
+    "id": 1,
+    "title": "MAIN SECURE OBSERVER",
+    "year": "2025",
+    "category": "INTERACTIVE INSTALLATION",
+    "desc": "Interactive installation for the Pokoje exhibition in Prague. The installation reflects the contemporary culture of constant surveillance and questions the boundaries between freedom and control in everyday life.",
+    "image": "/images/main1.jpg",
+    "gallery": ["/images/main2.jpg", "/images/main3.jpg", "/images/main4.jpg", "/videos/main1.mp4"],
+    "link": ""
+  },
+  {
+    "id": 2,
+    "title": "THE HIVE",
+    "year": "2026",
+    "category": "INTERACTIVE INSTALLATION",
+    "desc": "The Hive simulates the collective consciousness of autonomous machine organisms. Through light and sound, it responds to visitors' actions, revealing how even the smallest intervention can influence the behavior of an entire system.",
+    "image": "/images/hive1.jpg",
+    "gallery": ["/images/hive2.jpg","/images/hive1.jpg","/images/hive3.jpg", "/videos/hive1.mp4"],
+    "link": ""
+  },
+  {
+    "id": 3,
+    "title": "PAVUČINA",
+    "year": "2025",
+    "category": "VIDEO",
+    "desc": "The audiovisual installation Spiderweb captures the dramatic nocturnal life of insects beneath streetlights. Through artistic expression, the work draws attention to the environmental consequences of inappropriate public lighting and its impact on the degradation of ecosystems beyond the insect world.",
+    "image": "/images/pavucina1.jpg",
+    "gallery": ["/images/pavucina2.jpg","/images/pavucina3.jpg","/images/pavucina4.jpg","/videos/pavucina6.mp4"],
+    "link": ""
+  },
+  {
+    "id": 4,
+    "title": "[REDACTED]",
+    "year": "2026",
+    "category": "GAME / OBJECT",
+    "desc": "In this dystopian game, you become an anonymous cog in a totalitarian machine—a low-ranking censor whose sole duty is to cleanse an endless stream of text messages of ideologically unacceptable words in real time.",
+    "image": "/images/havel1.jpg",
+    "gallery": ["/images/havel2.jpg", "/images/havel3.jpg","/images/havel4.jpg","/images/havel5.png"],
+    "link": ""
+  },
+  {
+    "id": 6,
+    "title": "SONICSTEP",
+    "year": "2025",
+    "category": "GADGET",
+    "desc": "Deconstructed dancing game controller with built in light effects and sounds.",
+    "image": "/images/sonic2.jpg",
+    "gallery": ["/images/sonic1.jpg", "/images/sonic3.jpg", "/images/sonic4.jpg", "/videos/sonic1.mp4"],
+    "link": ""
+  },
+  {
+    "id": 7,
+    "title": "GESTUREGEDDON",
+    "year": "2024",
+    "category": "GAME",
+    "desc": "A video game controlled by the gestures you make. Defeat enemies, learn gestures, repeat.",
+    "image": "/images/gesture.png",
+    "gallery": ["/images/gesture1.jpg", "/images/gesture2.jpg", "/images/gesture3.jpg", "/videos/gesture.mp4"],
+    "link": ""
+  },
+  {
+    "id": 8,
+    "title": "ČAJOMAT",
+    "year": "2024",
+    "category": "OBJECT",
+    "desc": "A tea making robot with existential crisis.",
+    "image": "/images/caj1.jpg",
+    "gallery": ["/images/caj1.jpg","/images/caj2.jpg","/images/caj3.jpg","/videos/caj1.mp4"],
+    "link": ""
+  },
+  {
+    "id": 9,
+    "title": "TÁBORSKÁ SETKÁNÍ",
+    "year": "2026",
+    "category": "VIDEOMAPPING",
+    "desc": "Videomapping made for the city of Tábor. It features history of the city and the life of Jan Žižka.",
+    "image": "/images/tabor1.jpg",
+    "gallery": ["/images/tabor5.jpg","/images/tabor2.jpg","/images/tabor3.jpg","/images/tabor4.jpg"],
+    "link": ""
+  }
+]
